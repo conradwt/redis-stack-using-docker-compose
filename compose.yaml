@@ -1,0 +1,22 @@
+services:
+  redis-stack:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+    ports:
+      - '6379:6379'
+      - '8001:8001'
+    # environment:
+    #   REDIS_ARGS: '--requirepass password'
+    volumes:
+      - redis-data:/data # Mounts the /data directory in the container
+    restart: unless-stopped
+    healthcheck:
+      # test: ['CMD', 'redis-cli', '-a', 'password', 'ping']
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  redis-data: {}
